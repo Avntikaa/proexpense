@@ -43,12 +43,20 @@ toast({
     // cxt.setProfilePage(true);
   });
 }
-
+else{
+  toast({
+          title: "Invalid",
+          description: 'Wrong Password or email',
+          status: "warning",
+          duration: 9000,
+          isClosable: true,
+        })
+}
 }
 catch(error){
-     toast({
+    toast({
           title: "Invalid",
-          description: "Ntwork error",
+          description: 'Netwrok error',
           status: "warning",
           duration: 9000,
           isClosable: true,

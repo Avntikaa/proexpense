@@ -7,11 +7,11 @@ const[isLogin,setIsLogin]=useState(false);
 const[sign,setSign]=useState(false);
 const[email,setEmail]=useState();
 const[token,setToken]=useState();
-console.log(sign);
+const[profile,setProfile]=useState(false);
   return (
     <Context.Provider
       value={{
-        isLogin,setIsLogin,token,setToken,email,setEmail,sign,setSign
+        isLogin,setIsLogin,token,setToken,email,setEmail,sign,profile,setProfile,setSign
         }}>
       {children}
     </Context.Provider>

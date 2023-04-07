@@ -48,7 +48,7 @@ console.log('Sign in successfully');
   cxt.setSign(true);
 }
 }
-catch(error){
+catch{
    toast({
           title: "Invalid",
           description: "Ntwork error",
