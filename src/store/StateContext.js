@@ -17,7 +17,11 @@ const[idname,setIdname]=useState();
 const[forgetPage,SetForgetPage]=useState(false);
 const[expenselist,setExpenselist]=useState([]);
 const[isAdded,setIsAdded]=useState(false);
-
+const [title,setTitle]=useState('');
+    const [price,setPrice]=useState('');
+    const[cat,setCat]=useState();
+    const[enableEdit,setEnableEdit]=useState(false);
+    const[pid,setPid]=useState();
 useEffect(()=>{
   (async()=>{
 try{
@@ -46,6 +50,27 @@ catch(error){
 })()
 },[isLogin])
 
+
+const getexpense=async()=>{
+        return new Promise((resolve, reject) => {
+(async()=>{
+  const res=await fetch(`https://expenseapp-c536b-default-rtdb.firebaseio.com/expense.json`,{
+  method:'GET',
+  headers:{
+    'Content-Type':'application/json'
+  }
+})
+if(res.ok){
+  res.json().then((data)=>{
+console.log(data);
+        const newArray=Object.keys(data);
+        resolve([newArray,data]);
+      })
+    }
+})()
+        })
+}
+
 const sendMail=async()=>{
   console.log('verified');
 const res=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAtkc8ao4DWu2Lwz2rK_mXBqzQDI6KnYbo',{
@@ -66,49 +91,68 @@ console.log(data);
 }
 
 useEffect(()=>{
-  (async()=>{
-        
-    const res=await fetch(`https://expenseapp-c536b-default-rtdb.firebaseio.com/expense.json`,{
-  method:'GET',
+(async()=>{
+  const newArray=await getexpense();
+  const data=newArray[1];
+newArray[0].forEach((i)=>{
+            setExpenselist((prev)=>[...prev,data[i]]); 
+})
+})()
+},[])
+
+const removeitemfromcart=async(item)=>{
+const [newArray,data]=await getexpense();
+let expenseid;
+newArray.forEach((i)=>{
+  if(data[i].title==item.title){
+    expenseid=i;
+  }
+})
+ const res=await fetch(`https://expenseapp-c536b-default-rtdb.firebaseio.com/expense/${expenseid}.json`,{
+  method:'DELETE',
   headers:{
     'Content-Type':'application/json'
   }
 })
-
 if(res.ok){
-  res.json().then((data)=>{
-console.log(data);
-toast({
-          title: 'Successfully Updated',
-          status: 'success',
-          duration: 9000,
-          isClosable: true,
-        })
-        const newArray=Object.keys(data);
-newArray.forEach((i)=>{
-            setExpenselist((prev)=>[...prev,data[i]]); 
+  console.log(res.json());
+}
+const tempArray=expenselist.filter((i)=>{
+if(i.title!=item.title)
+return i;
 })
-
-  });
-
+console.log(tempArray);
+setExpenselist(tempArray);
 }
-else{
-  toast({
-          title: "Invalid",
-          description: 'Wrong Network',
-          status: "warning",
-          duration: 9000,
-          isClosable: true,
-        })
+
+const edititem=async(item)=>{
+const [newArray,data]=await getexpense();
+let expenseid;
+console.log(newArray);
+newArray.forEach((i)=>{
+  console.log(item.id);
+    console.log(data[i].id)
+  if(data[i].id===item.id){
+    
+    expenseid=i;
+  }
+})
+console.log(expenseid);
+return expenseid;
 }
-  })()
-},[])
+
+const editbox=(item)=>{
+setTitle(item.title);
+setCat(item.category);
+setPrice(item.price);
+setEnableEdit(true);
+}
   return (
     <Context.Provider
       value={{
         isLogin,setIsLogin,token,setToken,email,setEmail,sign,profile,setProfile,setSign,name,profileurl,setName,setProfileurl,profileupdated,
-        setProfileupdated,idname,sendMail,forgetPage,SetForgetPage,expenselist,setExpenselist,
-        isAdded,setIsAdded
+        setProfileupdated,idname,sendMail,forgetPage,SetForgetPage,expenselist,setExpenselist,removeitemfromcart,
+        isAdded,setIsAdded,edititem,editbox,title,setTitle,price,setPrice,setCat,cat,enableEdit,pid,setPid
         }}>
       {children}
     </Context.Provider>

@@ -23,6 +23,8 @@ const cxt=useStateContext();
           <Td>
            <Button style={{border:'none'}}><span style={{fontSize:"30px",color:'red'}}  onClick={()=>cxt.removeitemfromcart(props.i)}>Delete</span>
        </Button>
+    <Button style={{border:'none'}}><span style={{fontSize:"30px",color:'red'}}  onClick={()=>cxt.editbox(props.i)}>Edit</span>
+</Button>
        </Td>
         </Tr>
         </Tbody>
