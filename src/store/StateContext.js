@@ -15,7 +15,7 @@ const[profileurl,setProfileurl]=useState();
 const[profileupdated,setProfileupdated]=useState(false);
 const[idname,setIdname]=useState();
 const[forgetPage,SetForgetPage]=useState(false);
-
+const[expenselist,setExpenselist]=useState([]);
 useEffect(()=>{
   (async()=>{
 try{
@@ -67,7 +67,7 @@ console.log(data);
     <Context.Provider
       value={{
         isLogin,setIsLogin,token,setToken,email,setEmail,sign,profile,setProfile,setSign,name,profileurl,setName,setProfileurl,profileupdated,
-        setProfileupdated,idname,sendMail,forgetPage,SetForgetPage
+        setProfileupdated,idname,sendMail,forgetPage,SetForgetPage,expenselist,setExpenselist
         }}>
       {children}
     </Context.Provider>

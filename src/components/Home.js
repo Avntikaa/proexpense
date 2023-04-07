@@ -1,6 +1,8 @@
 import React from 'react'
 import { useStateContext } from '../store/StateContext'
 import Profile from './Profile';
+import ExpenseForm from './ExpenseForm';
+import EXpenseData from './EXpenseData';
 import {
   Box,
   Button,
@@ -32,6 +34,8 @@ const Home = () => {
         </Container>
       </Box>
       {cxt.profile &&<Profile/>}
+      <ExpenseForm/>
+     <EXpenseData/>
     </div>
   )
 }
