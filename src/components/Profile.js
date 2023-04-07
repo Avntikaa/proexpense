@@ -2,17 +2,17 @@ import React,{useRef} from 'react'
 import {useToast,FormControl,
   FormLabel,Input,Button,Form
 } from '@chakra-ui/react'
+import { useStateContext } from '../store/StateContext';
 
 const Profile = () => {
     const toast=useToast();
-    const name=useRef();
-   const url=useRef();
+const cxt=useStateContext();
 
     const submitlogindetail=async (e)=>{
         console.log('work');
 e.preventDefault();
-const enteredName=name.current.value;
-const enteredUrl=url.current.value;
+const enteredName=cxt.name;
+const enteredUrl=cxt.profileurl;
 try{
 const res=await fetch('https://expenseapp-c536b-default-rtdb.firebaseio.com/profile.json',{
   method:'POST',
@@ -60,8 +60,8 @@ catch(error){
         <h1>Contact Details</h1>
         <form onSubmit={submitlogindetail} marginTop={20}>
        <FormControl >
-  <Input type='text' ref={name} width='300px' marginRight={10} placeholder='Your Full Name' />
-    <Input type='url' ref={url} width='300px' marginRight={10} placeholder='Your Profile url' />
+  <Input type='text' onChange={(e)=>cxt.setName(e.target.value)} width='300px' marginRight={10} placeholder='Your Full Name' value={cxt.name}/>
+    <Input type='url' onChange={(e)=>cxt.setProfileurl(e.target.value)} width='300px' marginRight={10} placeholder='Your Profile url' value={cxt.profileurl}/>
 
         <Button type='submit'>Update</Button>
 </FormControl>
