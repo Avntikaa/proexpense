@@ -27,7 +27,7 @@ const EXpenseData = () => {
         </Tr>
               </Thead>  
 {
-    cxt.expenselist.map((i)=>{
+    cxt.expenselist.length>0 && cxt.expenselist.map((i)=>{
 return <Product i={i} />
     })
 }

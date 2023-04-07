@@ -16,6 +16,8 @@ const[profileupdated,setProfileupdated]=useState(false);
 const[idname,setIdname]=useState();
 const[forgetPage,SetForgetPage]=useState(false);
 const[expenselist,setExpenselist]=useState([]);
+const[isAdded,setIsAdded]=useState(false);
+
 useEffect(()=>{
   (async()=>{
 try{
@@ -63,11 +65,50 @@ console.log(data);
 }
 }
 
+useEffect(()=>{
+  (async()=>{
+        
+    const res=await fetch(`https://expenseapp-c536b-default-rtdb.firebaseio.com/expense.json`,{
+  method:'GET',
+  headers:{
+    'Content-Type':'application/json'
+  }
+})
+
+if(res.ok){
+  res.json().then((data)=>{
+console.log(data);
+toast({
+          title: 'Successfully Updated',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
+        const newArray=Object.keys(data);
+newArray.forEach((i)=>{
+            setExpenselist((prev)=>[...prev,data[i]]); 
+})
+
+  });
+
+}
+else{
+  toast({
+          title: "Invalid",
+          description: 'Wrong Network',
+          status: "warning",
+          duration: 9000,
+          isClosable: true,
+        })
+}
+  })()
+},[])
   return (
     <Context.Provider
       value={{
         isLogin,setIsLogin,token,setToken,email,setEmail,sign,profile,setProfile,setSign,name,profileurl,setName,setProfileurl,profileupdated,
-        setProfileupdated,idname,sendMail,forgetPage,SetForgetPage,expenselist,setExpenselist
+        setProfileupdated,idname,sendMail,forgetPage,SetForgetPage,expenselist,setExpenselist,
+        isAdded,setIsAdded
         }}>
       {children}
     </Context.Provider>

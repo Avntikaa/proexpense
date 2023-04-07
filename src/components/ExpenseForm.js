@@ -1,7 +1,11 @@
 import React, { useState} from 'react'
 import { createContext } from 'react';
 import { useStateContext } from '../store/StateContext';
+import {useToast,FormControl,
+  FormLabel,Input,Button,Form
+} from '@chakra-ui/react'
 const ExpenseForm = (props) => {
+  const toast=useToast();
     const [title,setTitle]=useState('');
     const [price,setPrice]=useState('');
     const[cat,setCat]=useState();
@@ -17,7 +21,7 @@ const ExpenseForm = (props) => {
 setCat(e.target.value);
     }
 
-    const onSubmitFormDeatils=(e)=>{
+    const onSubmitFormDeatils=async(e)=>{
         console.log('kfnkj');
         e.preventDefault();
         const newexpense={
@@ -25,7 +29,39 @@ setCat(e.target.value);
             price:price,
             category:cat
         }
+        const res=await fetch(`https://expenseapp-c536b-default-rtdb.firebaseio.com/expense.json`,{
+  method:'POST',
+  body:JSON.stringify({
+title:title,
+            price:price,
+            category:cat  }),
+  headers:{
+    'Content-Type':'application/json'
+  }
+})
+if(res.ok){
+  res.json().then((data)=>{
+console.log(data);
+toast({
+          title: 'Successfully Updated',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
+  });
+    cxt.setIsAdded((prev)=>!prev);
         cxt.setExpenselist((prev)=>[...prev,newexpense]);
+
+}
+else{
+  toast({
+          title: "Invalid",
+          description: 'Wrong Password or email',
+          status: "warning",
+          duration: 9000,
+          isClosable: true,
+        })
+}
     }
 
     const onCancel=()=>{
