@@ -12,6 +12,10 @@ const[token,setToken]=useState();
 const[profile,setProfile]=useState(false);
 const[name,setName]=useState('');
 const[profileurl,setProfileurl]=useState();
+const[profileupdated,setProfileupdated]=useState(false);
+const[idname,setIdname]=useState();
+
+
 useEffect(()=>{
   (async()=>{
 try{
@@ -23,7 +27,9 @@ const res=await fetch('https://expenseapp-c536b-default-rtdb.firebaseio.com/prof
 })
 if(res.ok){
   res.json().then((data)=>{
+    setProfileupdated(true);
 const Idname=Object.keys(data);
+setIdname(Object.keys(data));
 setName(data[Idname].name);
 setProfileurl(data[Idname].profileurl);
   });
@@ -37,10 +43,14 @@ catch(error){
 }
 })()
 },[isLogin])
+
+
+
   return (
     <Context.Provider
       value={{
-        isLogin,setIsLogin,token,setToken,email,setEmail,sign,profile,setProfile,setSign,name,profileurl,setName,setProfileurl
+        isLogin,setIsLogin,token,setToken,email,setEmail,sign,profile,setProfile,setSign,name,profileurl,setName,setProfileurl,profileupdated,
+        setProfileupdated,idname
         }}>
       {children}
     </Context.Provider>

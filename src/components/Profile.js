@@ -7,15 +7,62 @@ import { useStateContext } from '../store/StateContext';
 const Profile = () => {
     const toast=useToast();
 const cxt=useStateContext();
-
     const submitlogindetail=async (e)=>{
         console.log('work');
 e.preventDefault();
 const enteredName=cxt.name;
 const enteredUrl=cxt.profileurl;
+if(!cxt.profileupdated){
 try{
 const res=await fetch('https://expenseapp-c536b-default-rtdb.firebaseio.com/profile.json',{
   method:'POST',
+  body:JSON.stringify({
+name:enteredName,
+profileurl:enteredUrl
+  }),
+  headers:{
+    'Content-Type':'application/json'
+  }
+})
+if(res.ok){
+  res.json().then((data)=>{
+      cxt.setProfileupdated(true);
+console.log(data);
+toast({
+          title: 'Successfully Added',
+          status: 'success',
+          duration: 9000,
+          isClosable: true,
+        })
+  });
+}
+else{
+  toast({
+          title: "Invalid",
+          description: 'Wrong Password or email',
+          status: "warning",
+          duration: 9000,
+          isClosable: true,
+        })
+}
+}
+catch(error){
+    toast({
+          title: "Invalid",
+          description: 'Netwrok error',
+          status: "warning",
+          duration: 9000,
+          isClosable: true,
+        })
+}
+}
+else{
+try{
+    console.log('alreasy');
+   const id= cxt.idname;
+   console.log(id[0]);
+const res=await fetch(`https://expenseapp-c536b-default-rtdb.firebaseio.com/profile/${id}.json`,{
+  method:'PUT',
   body:JSON.stringify({
 name:enteredName,
 profileurl:enteredUrl
@@ -55,6 +102,7 @@ catch(error){
         })
 }
 }
+    }
   return (
     <div>
         <h1>Contact Details</h1>
