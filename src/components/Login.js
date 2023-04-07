@@ -1,8 +1,9 @@
 import React,{useState,useRef} from 'react'
 import './SignUp.css'
 import { useStateContext } from '../store/StateContext';
-import {useToast
+import {Link, useToast
 } from '@chakra-ui/react'
+import ForgetPass from './ForgetPass';
 const Login = () => {
   const cxt=useStateContext();
 const toast = useToast();
@@ -82,10 +83,13 @@ catch(error){
           />
         </div>
         <div>
-{<button type='submit'>Login</button>}
-        
+
+<button type='submit'>Login</button>
+                  <p onClick={()=>{cxt.SetForgetPage(true)}}>Forget Password</p>
+
         </div>
       </form>
+      {cxt.forgetPage && <ForgetPass/>}
       </section>
       
    </>
