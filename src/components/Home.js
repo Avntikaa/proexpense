@@ -17,12 +17,15 @@ const Home = () => {
         <Container py={{  lg: '2' }} marginLeft={200}>
           <HStack >
             <div>
-            <Text marginRight={700}>Welcome to the Expense </Text>
+            <Text marginRight={500}>Welcome to the Expense </Text>
             </div>
                 <HStack spacing="3" marginLeft={100}>
                   <h3>Your profile is incomplete</h3>
                   <Button colorScheme='teal' size='lg' onClick={()=>cxt.setProfile(true)}>Complete Now</Button>
+                      <Button colorScheme='teal' size='lg' onClick={()=>cxt.sendMail()}>Verify Email</Button>
+
                 </HStack>
+
           </HStack>
         </Container>
       </Box>

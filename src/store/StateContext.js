@@ -44,13 +44,30 @@ catch(error){
 })()
 },[isLogin])
 
-
+const sendMail=async()=>{
+  console.log('verified');
+const res=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyAtkc8ao4DWu2Lwz2rK_mXBqzQDI6KnYbo',{
+  method:'POST',
+  body:JSON.stringify({
+"requestType":"VERIFY_EMAIL",
+"idToken":token
+  }),
+  headers:{
+    'Content-Type':'application/json'
+  }
+})
+if(res.ok){
+  res.json().then((data)=>{
+console.log(data);
+  });
+}
+}
 
   return (
     <Context.Provider
       value={{
         isLogin,setIsLogin,token,setToken,email,setEmail,sign,profile,setProfile,setSign,name,profileurl,setName,setProfileurl,profileupdated,
-        setProfileupdated,idname
+        setProfileupdated,idname,sendMail
         }}>
       {children}
     </Context.Provider>
