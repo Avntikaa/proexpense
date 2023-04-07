@@ -22,8 +22,10 @@ const Home = () => {
                 <HStack spacing="3" marginLeft={100}>
                   <h3>Your profile is incomplete</h3>
                   <Button colorScheme='teal' size='lg' onClick={()=>cxt.setProfile(true)}>Complete Now</Button>
-                      <Button colorScheme='teal' size='lg' onClick={()=>cxt.sendMail()}>Verify Email</Button>
-
+                <Button colorScheme='teal' size='lg' onClick={()=>cxt.sendMail()}>Verify Email</Button>
+                <Button colorScheme='teal' size='lg' onClick={()=>{
+                  localStorage.setItem('id',null);
+                  cxt.setIsLogin(false)}}>Log Out</Button>
                 </HStack>
 
           </HStack>
