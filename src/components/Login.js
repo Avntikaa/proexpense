@@ -1,28 +1,21 @@
- import React,{useState,useRef} from 'react'
+import React,{useState,useRef} from 'react'
 import './SignUp.css'
+import { useStateContext } from '../store/StateContext';
 import {useToast
 } from '@chakra-ui/react'
-import { useStateContext } from '../store/StateContext';
-
-
-const Signup = () => {
-   const toast = useToast();
-const cxt=useStateContext();
+const Login = () => {
+  const cxt=useStateContext();
+const toast = useToast();
 const email=useRef();
 const password=useRef();
-const confirmpassword=useRef();
-  
 
+  
   const submitlogindetail=async (e)=>{
 e.preventDefault();
 const enteredEmail=email.current.value;
 const enteredPassword=password.current.value;
-const enteredconfirmpassword=confirmpassword.current.value;
-console.log(typeof(enteredconfirmpassword));
-console.log(typeof(enteredPassword));
-if(enteredconfirmpassword===enteredPassword){
 try{
-const res=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAtkc8ao4DWu2Lwz2rK_mXBqzQDI6KnYbo',{
+const res=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAtkc8ao4DWu2Lwz2rK_mXBqzQDI6KnYbo',{
   method:'POST',
   body:JSON.stringify({
 email:enteredEmail,
@@ -35,33 +28,27 @@ returnSecureToken:true
 })
 if(res.ok){
   res.json().then((data)=>{
-console.log('Sign in successfully');
-
-   toast({
-          title: 'Successfully signup',
-          description: "We've created your account for you.",
+console.log('Logg in successfully');
+cxt.setEmail(enteredEmail);
+cxt.setToken(data.idToken);
+localStorage.setItem('id',data.idToken);
+localStorage.setItem('email',enteredEmail);
+toast({
+          title: 'Successfully Login',
           status: 'success',
           duration: 9000,
           isClosable: true,
         })
+    cxt.setIsLogin((prevState) => !prevState);
+    // cxt.setProfilePage(true);
   });
-  cxt.setSign(true);
 }
+
 }
 catch(error){
-   toast({
-          title: "Invalid",
-          description: "Ntwork error",
-          status: "warning",
-          duration: 9000,
-          isClosable: true,
-        })
-}
-}
-else{
      toast({
           title: "Invalid",
-          description: "Wrong Password",
+          description: "Ntwork error",
           status: "warning",
           duration: 9000,
           isClosable: true,
@@ -71,7 +58,7 @@ else{
   return (
     <>
    <section className="form-style-6" >
-      <h1>Sign In</h1>
+      <h1>Login </h1>
     <form onSubmit={submitlogindetail}>
         <div>
           <label htmlFor='email'>Your Email</label>
@@ -86,26 +73,17 @@ else{
             required
           />
         </div>
-         <div>
-          <label htmlFor='Confrim password'>Your Password</label>
-          <input
-            type='password'
-            id='password'
-            ref={confirmpassword}
-            required
-          />
-        </div>
         <div>
-{<button type='submit'>Sign In</button>}
+{<button type='submit'>Login</button>}
         
         </div>
       </form>
       </section>
-
+      
    </>
   );
 };
 
 
 
-export default Signup
+export default Login
