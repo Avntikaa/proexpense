@@ -11,8 +11,11 @@ import {
   HStack,
   Text
 } from '@chakra-ui/react'
+import { useDispatch } from 'react-redux';
+import { authActions } from '../store/reduxdemo';
 const Home = () => {
   const cxt=useStateContext();
+  const dispatch=useDispatch();
   return (
     <div>
        <Box as="nav" bg="bg-surface" boxShadow="md" borderBottom="1px solid grey">
@@ -27,7 +30,10 @@ const Home = () => {
                 <Button colorScheme='teal' size='lg' onClick={()=>cxt.sendMail()}>Verify Email</Button>
                 <Button colorScheme='teal' size='lg' onClick={()=>{
                   localStorage.setItem('id',null);
-                  cxt.setIsLogin(false)}}>Log Out</Button>
+                  localStorage.setItem('email',null);
+                  dispatch(authActions.logout());
+                }
+                  }>Log Out</Button>
                 </HStack>
 
           </HStack>

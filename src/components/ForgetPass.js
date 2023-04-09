@@ -1,6 +1,5 @@
 import React,{useRef} from 'react'
-import { useToast
-} from '@chakra-ui/react'
+import { useToast} from '@chakra-ui/react'
 
 const ForgetPass = () => {
     const email=useRef();
@@ -20,7 +19,6 @@ const enteredEmail=email.current.value;
 })
 if(res.ok){
   res.json().then((data)=>{
-console.log(data);
 toast({
           title: ' Verification link was Successfully sent',
           status: 'success',

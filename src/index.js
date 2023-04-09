@@ -5,14 +5,19 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from '@chakra-ui/react'
 import { StateContext } from './store/StateContext';
-
+import { Provider } from 'react-redux';
+import store from './store/reduxdemo';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
         <ChakraProvider>
+                      <Provider store={store}>
+
           <StateContext>
-    <App />
+             <App />
     </StateContext>
+        </Provider>
+
     </ChakraProvider>
 );
 

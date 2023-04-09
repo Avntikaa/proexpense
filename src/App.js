@@ -2,15 +2,15 @@ import './App.css';
 import SignUp from './components/SignUp';
 import Home from './components/Home';
 import Login from './components/Login';
-import { useStateContext } from './store/StateContext';
-
+import { useSelector } from 'react-redux';
 function App() {
-  const cxt=useStateContext();
+    const isLogin = useSelector((state) => state.auth.isLogin);
+
   return (
     <div className="App">
-         {!cxt.isLogin &&  <SignUp/>}
-          {!cxt.isLogin && <Login/>}
-       {cxt.isLogin && <Home/>}
+         {!isLogin &&  <SignUp/>}
+          {!isLogin && <Login/>}
+       {isLogin && <Home/>}
     </div>
   );
 }

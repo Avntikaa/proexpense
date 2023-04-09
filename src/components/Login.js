@@ -4,13 +4,15 @@ import { useStateContext } from '../store/StateContext';
 import {Link, useToast
 } from '@chakra-ui/react'
 import ForgetPass from './ForgetPass';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../store/reduxdemo';
 const Login = () => {
   const cxt=useStateContext();
 const toast = useToast();
 const email=useRef();
 const password=useRef();
 
-  
+  const dispatch=useDispatch();
   const submitlogindetail=async (e)=>{
 e.preventDefault();
 const enteredEmail=email.current.value;
@@ -29,9 +31,7 @@ returnSecureToken:true
 })
 if(res.ok){
   res.json().then((data)=>{
-console.log('Logg in successfully');
-cxt.setEmail(enteredEmail);
-cxt.setToken(data.idToken);
+dispatch(authActions.login(data.idToken,enteredEmail));
 localStorage.setItem('id',data.idToken);
 localStorage.setItem('email',enteredEmail);
 toast({
@@ -40,8 +40,6 @@ toast({
           duration: 9000,
           isClosable: true,
         })
-    cxt.setIsLogin((prevState) => !prevState);
-    // cxt.setProfilePage(true);
   });
 }
 else{

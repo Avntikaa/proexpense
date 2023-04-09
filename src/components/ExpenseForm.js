@@ -1,44 +1,43 @@
 import React, { useState} from 'react'
-import { createContext } from 'react';
 import { useStateContext } from '../store/StateContext';
-import {useToast,FormControl,
-  FormLabel,Input,Button,Form
-} from '@chakra-ui/react'
+import {useToast} from '@chakra-ui/react'
+import { useDispatch } from 'react-redux';
+import { addExActions } from '../store/reduxdemo';
+import { useSelector } from 'react-redux';
 const ExpenseForm = (props) => {
   const toast=useToast();
-    
+      const dispatch=useDispatch();
+    const rdx = useSelector((state) => state.addexpense);
+
     const cxt=useStateContext();
     const addtitle=(e)=>{
-        cxt.setTitle(e.target.value);
+      dispatch(addExActions.addTitle(e.target.value));
     }
     const addPrice=(e)=>{
-        cxt.setPrice(e.target.value);
+      dispatch(addExActions.addPrice(e.target.value));
     }
     
     const addCategory=(e)=>{
-cxt.setCat(e.target.value);
+      dispatch(addExActions.addCategory(e.target.value));
     }
 
     const onSubmitFormDeatils=async(e)=>{
         e.preventDefault();
-                if(!cxt.enableEdit){
+           if(!rdx.enableedit){
         const id=Math.random();
-        cxt.setPid(id);
         const newexpense={
           id:id,
-            title:cxt.title,
-            price:cxt.price,
-            category:cxt.cat
+            title:rdx.title,
+            price:rdx.price,
+            category:rdx.category
         }
-        console.log(cxt.enableEdit);
-          console.log('submit button')
         const res=await fetch(`https://expenseapp-c536b-default-rtdb.firebaseio.com/expense.json`,{
   method:'POST',
   body:JSON.stringify({
     id:id,
-title:cxt.title,
-            price:cxt.price,
-            category:cxt.cat  }),
+title:rdx.title,
+            price:rdx.price,
+            category:rdx.category  }),
   headers:{
     'Content-Type':'application/json'
   }
@@ -53,9 +52,7 @@ toast({
           isClosable: true,
         })
   });
-    cxt.setIsAdded((prev)=>!prev);
-        cxt.setExpenselist((prev)=>[...prev,newexpense]);
-
+  dispatch(addExActions.adddata([id,newexpense,rdx.price]));
 }
 else{
   toast({
@@ -68,21 +65,22 @@ else{
 }
         }
         else{
+          console.log(rdx.isAdded);
           const newexpense={
-          id:cxt.pid,
-            title:cxt.title,
-            price:cxt.price,
-            category:cxt.cat
+          id:rdx.pid,
+            title:rdx.title,
+            price:rdx.price,
+            category:rdx.cat
         }
               const expenseid=await cxt.edititem(newexpense);
 console.log(expenseid);
            const res=await fetch(`https://expenseapp-c536b-default-rtdb.firebaseio.com/expense/${expenseid}.json`,{
   method:'PUT',
   body:JSON.stringify({
-    id:cxt.pid,
-title:cxt.title,
-            price:cxt.price,
-            category:cxt.cat  }),
+    id:rdx.pid,
+title:rdx.title,
+            price:rdx.price,
+            category:rdx.cat  }),
   headers:{
     'Content-Type':'application/json'
   }
@@ -97,7 +95,6 @@ toast({
           isClosable: true,
         })
   });
-    cxt.setIsAdded((prev)=>!prev);
 }
 else{
   toast({
@@ -120,10 +117,10 @@ else{
 <form>
       <h1>Add Expense</h1>
 
-<input type="text"  onChange={addtitle} placeholder="Enter item" value={cxt.title}/>
-<input type="number" onChange={addPrice} placeholder="Enter Price" value={cxt.price}/>
+<input type="text"  onChange={addtitle} placeholder="Enter item" value={rdx.title}/>
+<input type="number" onChange={addPrice} placeholder="Enter Price" value={rdx.price}/>
 <label>Country</label>
-  <select placeholder='Select country' onChange={addCategory} value={cxt.cat}>
+  <select placeholder='Select country' onChange={addCategory} value={rdx.category}>
     <option>Foods</option>
     <option>Entertainment</option>
 <option>Clothing</option>

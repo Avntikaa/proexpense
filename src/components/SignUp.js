@@ -18,8 +18,6 @@ e.preventDefault();
 const enteredEmail=email.current.value;
 const enteredPassword=password.current.value;
 const enteredconfirmpassword=confirmpassword.current.value;
-console.log(typeof(enteredconfirmpassword));
-console.log(typeof(enteredPassword));
 if(enteredconfirmpassword===enteredPassword){
 try{
 const res=await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAtkc8ao4DWu2Lwz2rK_mXBqzQDI6KnYbo',{
@@ -35,7 +33,6 @@ returnSecureToken:true
 })
 if(res.ok){
   res.json().then((data)=>{
-console.log('Sign in successfully');
 
    toast({
           title: 'Successfully signup',
@@ -45,7 +42,6 @@ console.log('Sign in successfully');
           isClosable: true,
         })
   });
-  cxt.setSign(true);
 }
 }
 catch{
