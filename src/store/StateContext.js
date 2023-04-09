@@ -128,7 +128,7 @@ dispatch(addExActions.editbox(item));
     <Context.Provider
       value={{
        profile,setProfile,sendMail,forgetPage,SetForgetPage,removeitemfromcart,
-        edititem,editbox
+        edititem,editbox,getexpense
         }}>
       {children}
     </Context.Provider>

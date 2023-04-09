@@ -47,7 +47,9 @@ title:'',
 price:0,
 category:'',
 enableedit:false,
-total:0
+total:0,
+darkTheme:false,
+openPremium:false
 }
 
 const addExSlice = createSlice({
@@ -74,18 +76,25 @@ state.category=action.payload;
     },
     loaddata(state,action){
             state.expenselist= [...state.expenselist, action.payload];
+            state.total=state.total+parseInt(action.payload.price);
 
     },
     removeitem(state,action){
       console.log(action.payload);
       state.expenselist=action.payload;
     },
-  editbox(state,action){
+    editbox(state,action){
 state.title=action.payload.title;
 state.price=action.payload.price;
 state.category=action.payload.category;
 state.enableedit=true;
     },
+    activatePremium(state){
+state.openPremium=true;
+    },
+    enabledarktheme(state){
+      state.darkTheme=!state.darkTheme;
+    }
   },
 });const store = configureStore({
   reducer: {  addexpense:addExSlice.reducer,auth: authSlice.reducer },
